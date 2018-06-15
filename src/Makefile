@@ -8,9 +8,10 @@ target = usbrh
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-all: $(objs)
+$(target): $(objs)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(target) $(objs)
+
+all: $(target)
 
 clean:
 	rm -rf $(objs) $(target)
-
