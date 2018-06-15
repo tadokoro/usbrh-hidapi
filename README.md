@@ -35,8 +35,8 @@ Linux kernelはAPIの変更が激しく、最新のLinuxカーネルで動作す
 Debian 9
 
 ## コンパイル
-     $ apt install -y libhidapi-dev pkg-config
-     $ make
+     $ apt install -y libhidapi-dev pkg-config build-essential
+     $ make -C src
  
 ## 動作例
     $ sudo ./usbrh
