@@ -22,7 +22,7 @@ static inline double calc_temp(const uint16_t t_raw) {
   return d1 + d2 * t_raw;
 }
 
-static inline double calc_hum(const uint16_t so_rh, const uint16_t t_c) {
+static inline double calc_hum(const uint16_t so_rh, const double t_c) {
   const double rh_linear = c1 + c2 * so_rh + c3 * (so_rh * so_rh);
   return (t_c - 25) * (t1 + t2 * so_rh) + rh_linear;
 }
