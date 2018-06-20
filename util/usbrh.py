@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import hid
+
 USBRH_VENDOR = 0x1774
 USBRH_PRODUCT = 0x1001
 
@@ -19,22 +20,30 @@ def calc_hum(so_rh, t_c):
     rh_linear = c1 + c2 * so_rh + c3 * (so_rh * so_rh)
     return (t_c - 25) * (t1 + t2 * so_rh) + rh_linear
 
-def usbrh_get_data():
+def usbrh_get_rawdata():
     h = hid.device()
     h.open(USBRH_VENDOR, USBRH_PRODUCT)
+    try:
+        data = [0]*7
+        h.write(data)
+        out = h.read(7)
+    except:
+        raise
+    finally:
+        h.close()
 
-    data = [0]*7
-    h.write(data)
+    return out
 
-    out = h.read(7)
-    h.close()
-
+def usbrh_trans_rawdata(out):
     so_rh = ((out[0] & 0xff) << 8) + (out[1] & 0xff)
     so_t = ((out[2] & 0xff) << 8) + (out[3] & 0xff)
+
     tc = calc_temp(so_t)
     rh = calc_hum(so_rh, tc)
 
     return (tc, rh)
 
 if __name__ == '__main__':
-    print('%.4f %.4f' % usbrh_get_data())
+    raw_data = usbrh_get_rawdata()
+    actual_data = usbrh_trans_rawdata(raw_data)
+    print('%.4f %.4f' % actual_data)
