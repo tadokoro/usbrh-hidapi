@@ -42,8 +42,12 @@ void usbrh_print_data(hid_device* const handle) {
     abort();
   }
 
-  res = hid_read(handle, buf.byte, 7);
-  if (res < 0) {
+  res = hid_read_timeout(handle, buf.byte, 7, 5000 /*ms*/);
+  if (res == 0) { /* means timeout */
+    fprintf(stderr, "hid_read: timeout\n");
+    abort();
+  }
+  else if (res < 0) {
     fprintf(stderr, "hid_read: failed\n");
     abort();
   }
