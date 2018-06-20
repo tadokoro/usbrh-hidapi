@@ -59,7 +59,7 @@ void usbrh_print_data(hid_device* const handle) {
   const double temp = calc_temp(temp_raw);
   const double hum = calc_hum(hum_raw, temp);
 
-  printf("%lf %lf\n", temp, hum);
+  printf("%.2lf %.2lf\n", temp, hum);
 }
 
 
